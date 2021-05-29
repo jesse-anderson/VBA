@@ -1,0 +1,72 @@
+Sub MSLCAttendanceTracker()
+'Basically finds duplicates and
+'sums the values of time in
+'an excel sheet
+Dim Diction As Variant
+Dim WorkRange As Range
+Dim ArraySave As Variant
+Dim arrrr As Variant
+Dim TimeyBoi As Variant
+
+On Error Resume Next
+xTitleId = "MSLC Attendance Summer" 'set title for the selection box
+TimeyBoi = InputBox("Enter Time in Minutes of your session")
+Set WorkRange = Application.Selection 'sets application type to selection
+Set WorkRange = Range("A1:H250") 'given range, used instead of selection range
+'Set WorkRange = Application.InputBox("Range", xTitleId, WorkRng.Address, Type:=8)'if you wanted to select by hand, less user friendly
+Set Diction = CreateObject("Scripting.Dictionary")
+Application.ScreenUpdating = True
+Worksheets("Sheet1").Sort.SortFields.Clear 'clear sort, preliminary for alphabetization
+Range("A1:G100").Sort Key1:=Range("A1"), Header:=xlYes 'sorts things and ignores the headers so no goofiness occurs
+'ArraySave = Range("B1:F100") 'saves the range, older version where I kept join/leave times
+'ArraySave2 = Range("H1:H100") 'same as above
+arrrr = WorkRange.Value 'assigns workRange.Value to a variable
+'below is the magic of adding to similar cells
+
+For i = 1 To UBound(arrrr, 1)
+    Diction(arrrr(i, 1)) = Diction(arrrr(i, 1)) + arrrr(i, 7)
+Next
+
+WorkRange.ClearContents 'deletes everything so as to sort and eliminate doubles
+WorkRange.Range("A1").Resize(Diction.Count, 1) = Application.WorksheetFunction.Transpose(Diction.keys)
+'Range("B1:F100").Value = ArraySave 'pastes ranges back in
+'Range("H1:H100").Value = ArraySave2'pastes ranges back in
+WorkRange.Range("G1").Resize(Diction.Count, 1) = Application.WorksheetFunction.Transpose(Diction.items)
+ArraySave3 = Range("G1:G100") 'saves the time in session array
+Range("B1:B100").NumberFormat = "HH:mm:ss" 'sets number format to something we can understand
+Range("B1:B100").Value = ArraySave3 'moves the array to column B to make things compact
+'deletes old columns, needed since I had some errors with deleting previously
+For i = 3 To 7
+Columns(i).EntireColumn.Delete
+Next i
+'ActiveSheet.Cells(1, 3) = "Statistics"
+ActiveSheet.Cells(1, 4) = "Average" 'sets cell to text
+ActiveSheet.Cells(1, 5) = "Count"
+ActiveSheet.Cells(1, 6) = "Avg Time in Session"
+ActiveSheet.Cells(2, 5) = "Count"
+ActiveSheet.Cells(2, 4).NumberFormat = "HH:mm:ss" 'sets number format of cell
+ActiveSheet.Cells(2, 4).Interior.ColorIndex = 4 'pretty colors
+ActiveSheet.Cells(2, 5).Interior.ColorIndex = 6
+ActiveSheet.Cells(2, 6).Interior.ColorIndex = 45
+'ActiveSheet.Cells(xlDown, 2) = 5
+Range("B1").End(xlDown).ClearContents 'clears contents of last value in B column
+'added this since a 0 appears randomly and
+'I don't have
+'the patience to debug
+ActiveSheet.Cells(2, 4) = Application.Average(Range("B2:B250")) 'calculates average of B column
+OurAverage = ActiveSheet.Cells(2, 4) * 24 * 60
+OurAverage.NumberFormat = "0.00"
+ActiveSheet.Cells(2, 5) = Application.Count(Range("B2:B250")) 'calculates count of B column - attendance
+OurCount = ActiveSheet.Cells(2, 5)
+OurCount.NumberFormat = "0.00"
+ActiveSheet.Cells(2, 6) = ActiveSheet.Cells(2, 4)
+ActiveSheet.Cells(2, 6).NumberFormat = "0.00"
+ActiveSheet.Cells(2, 6) = ((ActiveSheet.Cells(2, 4) * 24) / (TimeyBoi / 60))
+'24 is the conversion factor for the decimal conversion and timeyboi is the time for your own session
+ActiveSheet.Cells(2, 6).NumberFormat = "0%"
+OurAverageTime = ActiveSheet.Cells(2, 6) * 100
+OurAverageTime.NumberFormat = "0.00"
+MsgBox "Results From Your Session Are Below" & vbNewLine & vbNewLine & "Average time in session is " & Format(OurAverage, "0.00") & " minutes" & vbNewLine & "Attendance Number " & OurCount & vbNewLine & "Average Time in Session is " & Format(OurAverageTime, "0.00") & " Percent", Title:="MSLC Peer Leading Calculator"
+Application.ScreenUpdating = False
+End Sub
+
