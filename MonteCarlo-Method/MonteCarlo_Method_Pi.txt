@@ -1,0 +1,176 @@
+Option Base 1
+Option Explicit
+Sub MonteCarloPi()
+Dim N1 As Long
+Dim N2 As Long
+Dim N3 As Long
+Dim N4 As Long
+Dim N5 As Long
+Dim N6 As Long
+Dim N7 As Long
+
+Dim count As Long
+
+Dim i As Long 'lmao if you don't set i as Long you actually can't iterate past 32,767
+Dim n As Integer
+
+Dim xcoord As Double
+Dim ycoord As Double
+Dim distance As Double
+Dim Pi As Double
+Dim PiNoAvg As Double
+Dim AbsError As Double
+Dim PiReal As Double
+
+Dim startTime As Double
+Dim seconds As Double
+
+startTime = Timer
+
+PiReal = WorksheetFunction.Pi()
+
+N1 = Cells(2, 1)
+N2 = Cells(3, 1)
+N3 = Cells(4, 1)
+N4 = Cells(5, 1)
+N5 = Cells(6, 1)
+N6 = Cells(7, 1)
+N7 = Cells(8, 1)
+
+count = 0
+For n = 1 To 10
+For i = 1 To N1
+xcoord = Rnd() * 2 - 1
+
+ycoord = Rnd() * 2 - 1
+
+distance = Sqr(xcoord * xcoord + ycoord * ycoord)
+If distance <= 1 Then
+count = count + 1
+End If
+Next i
+PiNoAvg = (4 * (count / N1))
+Pi = (4 * (count / N1)) / n
+Next n
+Cells(2, 2) = PiNoAvg
+Cells(2, 3) = Pi
+Cells(2, 4) = Abs((PiReal - Pi) / Pi) * 100
+'==========================
+count = 0
+For n = 1 To 10
+For i = 1 To N2
+xcoord = Rnd() * 2 - 1
+
+ycoord = Rnd() * 2 - 1
+
+distance = Sqr(xcoord * xcoord + ycoord * ycoord)
+If distance <= 1 Then
+count = count + 1
+End If
+Next i
+PiNoAvg = (4 * (count / N2))
+Pi = (4 * (count / N2)) / n
+Next n
+Cells(3, 2) = PiNoAvg
+Cells(3, 3) = Pi
+Cells(3, 4) = Abs((PiReal - Pi) / Pi) * 100
+'=============================
+'==========================
+count = 0
+For n = 1 To 10
+For i = 1 To N3
+xcoord = Rnd() * 2 - 1
+
+ycoord = Rnd() * 2 - 1
+
+distance = Sqr(xcoord * xcoord + ycoord * ycoord)
+If distance <= 1 Then
+count = count + 1
+End If
+Next i
+PiNoAvg = (4 * (count / N3))
+Pi = (4 * (count / N3)) / n
+Next n
+Cells(4, 2) = PiNoAvg
+Cells(4, 3) = Pi
+Cells(4, 4) = Abs((PiReal - Pi) / Pi) * 100
+'==========================
+count = 0
+For n = 1 To 10
+For i = 1 To N4
+xcoord = Rnd() * 2 - 1
+
+ycoord = Rnd() * 2 - 1
+
+distance = Sqr(xcoord * xcoord + ycoord * ycoord)
+If distance <= 1 Then
+count = count + 1
+End If
+Next i
+PiNoAvg = (4 * (count / N4))
+Pi = (4 * (count / N4)) / n
+Next n
+Cells(5, 2) = PiNoAvg
+Cells(5, 3) = Pi
+Cells(5, 4) = Abs((PiReal - Pi) / Pi) * 100
+'==========================
+count = 0
+For n = 1 To 10
+For i = 1 To N5
+xcoord = Rnd() * 2 - 1
+
+ycoord = Rnd() * 2 - 1
+
+distance = Sqr(xcoord * xcoord + ycoord * ycoord)
+If distance <= 1 Then
+count = count + 1
+End If
+Next i
+PiNoAvg = (4 * (count / N5))
+Pi = (4 * (count / N5)) / n
+Next n
+Cells(6, 2) = PiNoAvg
+Cells(6, 3) = Pi
+Cells(6, 4) = Abs((PiReal - Pi) / Pi) * 100
+'==========================
+count = 0
+For n = 1 To 10
+For i = 1 To N6
+xcoord = Rnd() * 2 - 1
+
+ycoord = Rnd() * 2 - 1
+
+distance = Sqr(xcoord * xcoord + ycoord * ycoord)
+If distance <= 1 Then
+count = count + 1
+End If
+Next i
+PiNoAvg = (4 * (count / N6))
+Pi = (4 * (count / N6)) / n
+Next n
+Cells(7, 2) = PiNoAvg
+Cells(7, 3) = Pi
+Cells(7, 4) = Abs((PiReal - Pi) / Pi) * 100
+'==========================
+count = 0
+For n = 1 To 10
+For i = 1 To N7
+xcoord = Rnd() * 2 - 1
+
+ycoord = Rnd() * 2 - 1
+
+distance = Sqr(xcoord * xcoord + ycoord * ycoord)
+If distance <= 1 Then
+count = count + 1
+End If
+Next i
+PiNoAvg = (4 * (count / N7))
+Pi = (4 * (count / N7)) / n
+Next n
+Cells(8, 2) = PiNoAvg
+Cells(8, 3) = Pi
+Cells(8, 4) = Abs((PiReal - Pi) / Pi) * 100
+
+seconds = Round(Timer - startTime, 3)
+MsgBox " This code ran in " & seconds & " seconds"
+End Sub
