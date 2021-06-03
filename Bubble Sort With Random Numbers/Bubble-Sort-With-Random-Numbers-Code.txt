@@ -1,0 +1,56 @@
+Option Base 1
+Option Explicit
+
+Sub Bubbles()
+
+Dim i As Integer
+Dim hold As Double
+Dim swapped As Boolean
+
+'make active sheet
+Worksheets(ActiveSheet.Name).Activate
+
+For i = 1 To 20
+
+Cells(i + 1, 1) = WorksheetFunction.RandBetween(1, 100)
+Cells(i + 1, 2) = Cells(i + 1, 1).Value
+Next i
+
+swapped = True
+While swapped
+swapped = False
+For i = 1 To 19
+
+If Cells(i + 1, 2) < Cells(i + 2, 2) Then
+hold = Cells(i + 1, 2)
+Cells(i + 1, 2) = Cells(i + 2, 2)
+Cells(i + 2, 2) = hold
+swapped = True
+End If
+
+Next i 'iterations go brrrr
+
+Wend 'ends while
+
+For i = 1 To 20
+
+Cells(i + 1, 3) = Cells(i + 1, 1).Value
+Next i
+
+swapped = True
+While swapped
+swapped = False
+For i = 1 To 19
+
+If Cells(i + 1, 3) > Cells(i + 2, 3) Then
+hold = Cells(i + 1, 3)
+Cells(i + 1, 3) = Cells(i + 2, 3)
+Cells(i + 2, 3) = hold
+swapped = True
+End If
+
+Next i 'iterations go brrrr
+
+Wend 'ends while
+End Sub
+
