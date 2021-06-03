@@ -1,0 +1,53 @@
+Option Base 1
+Option Explicit
+
+Sub RandomBetween()
+
+Dim i As Integer
+
+Dim sum As Integer
+Dim count As Integer
+Dim avg As Double
+Dim max As Double
+Dim min As Double
+
+Dim raynge As Range
+
+Dim temp As Double
+Dim s As Double
+
+count = 0
+sum = 0
+temp = 0
+
+For i = 1 To 20
+Cells(i + 1, 1) = WorksheetFunction.RandBetween(1, 100)
+Cells(i + 1, 2) = Cells(i + 1, 1).Value
+count = count + 1
+sum = sum + Cells(i + 1, 2).Value
+
+If max < Cells(i + 1, 2).Value Then max = Cells(i + 1, 2).Value
+
+Next i
+
+avg = sum / count
+
+For i = 1 To 20
+
+temp = temp + (Cells(i + 1, 2) - avg) ^ 2
+
+Next i
+s = Sqr(temp / 19)
+
+Set raynge = Worksheets(ActiveSheet.Name).[B2:B21]
+
+max = WorksheetFunction.max(raynge)
+min = WorksheetFunction.min(raynge)
+Cells(1, 4) = avg
+Cells(2, 4) = max
+Cells(3, 4) = min
+Cells(4, 4) = FormatNumber(s, 2)
+End Sub
+
+
+
