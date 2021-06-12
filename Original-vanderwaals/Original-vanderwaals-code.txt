@@ -1,0 +1,99 @@
+Option Base 1
+Option Explicit
+
+Sub Originvanderwaals()
+
+Dim xL As Double
+Dim xR As Double
+Dim fxL As Double
+Dim fxR As Double
+Dim xM As Double
+Dim fxM As Double
+Dim i As Integer
+Dim iMax As Integer
+Dim Tol As Double
+
+'Make the current Worksheet the selected one:
+
+Worksheets(ActiveSheet.Name).Activate
+
+iMax = 100          'Maximum number of iterations
+Tol = 0.000001      'Tolerance for zero
+
+xL = Cells(2, 2)    'Choose that cell in matrix'
+xR = Cells(2, 3)
+fxL = vanderwaal(xL)     'fxL variable is stored as the output of xL that's been run through xL'
+fxR = vanderwaal(xR)     'same as above'
+Cells(2, 4) = fxL
+Cells(2, 5) = fxR
+
+If (fxL * fxR < 0) Then     'if value of variable fxL times fxR less than zero'
+  i = 1
+  fxM = fxR
+  
+  While Abs(fxM) > 0.000001
+    i = i + 1
+    xM = xL - fxL * (xR - xL) / (fxR - fxL)
+    fxM = vanderwaal(xM)
+    Cells(i, 6) = xM
+    Cells(i, 7) = fxM
+    
+    If (fxR * fxM > 0) Then
+    xR = xM
+    fxR = fxM
+    Else
+    xL = xM
+    fxL = fxM
+    End If
+    
+    Cells(i + 1, 1) = i
+    Cells(i + 1, 2) = xL
+    Cells(i + 1, 3) = xR
+    Cells(i + 1, 4) = fxL
+    Cells(i + 1, 5) = fxR
+
+    
+  Wend
+  
+  If (i >= iMax) Then
+  
+    Cells(i + 2, 1) = "Maximum iteration reached;"
+    Cells(i + 3, 1) = "Solution might not be valid"
+    
+  Else
+  
+    Cells(i + 2, 1) = "Solution is"
+    Cells(i + 3, 1) = "Volume ="
+    Cells(i + 3, 2) = xM
+    
+  End If
+Else
+    Cells(3, 1) = "Root is not bracketed, TRY AGAIN"
+End If
+End Sub
+
+Function vanderwaal(V)
+
+Dim R, P, T, Tc, Pc, a, b As Double
+
+R = 0.08206 'Constant'
+T = 523     'Kelvin'
+P = 10      'atm'
+Tc = 407.5  'Kelvin'
+Pc = 111.3  'atm'
+a = 4.238448
+b = 0.0375556
+
+vanderwaal = (P + a / V ^ 2) * (V - b) - R * T
+
+'Note: 1.1 uses different values for temp T'
+
+End Function
+'This program hated me using vanderwaal and liked fcalc for some reason'
+'so I used that instead after debugging for hours. Stick to the script'
+'given I guess.'
+'ACTUALLY'
+'Space out V^2 to V ^ 2 for some god awful reason'
+
+
+
